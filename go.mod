@@ -1,4 +1,4 @@
-module github.com/your-org/cert-system
+module github.com/mdv-pochta/cert-system
 
 go 1.21
 
