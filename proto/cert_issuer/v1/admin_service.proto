@@ -1,0 +1,42 @@
+syntax = "proto3";
+
+package cert_issuer.v1;
+
+option go_package = "github.com/mdv-pochta/cert-system/proto/cert_issuer/v1;certv1";
+
+service AdminService {
+  rpc ManagePolicy(PolicyRequest) returns (PolicyResponse);
+  rpc GetMetrics(MetricsRequest) returns (MetricsResponse);
+}
+
+message PolicyRequest {
+  string issuer_id = 1;
+  string domain_pattern = 2;
+  enum PatternType {
+    EXACT = 0;
+    WILDCARD = 1;
+    REGEX = 2;
+  }
+  PatternType pattern_type = 3;
+  enum Action {
+    ALLOW = 0;
+    BLOCK = 1;
+  }
+  Action action = 4;
+}
+
+message PolicyResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message MetricsRequest {
+  string issuer_id = 1;
+}
+
+message MetricsResponse {
+  int32 total_certificates = 1;
+  int32 expiring_soon = 2;
+  int32 queue_depth = 3;
+  float rate_limit_usage = 4;
+}

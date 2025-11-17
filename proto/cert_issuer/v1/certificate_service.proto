@@ -1,0 +1,73 @@
+syntax = "proto3";
+
+package cert_issuer.v1;
+
+option go_package = "github.com/mdv-pochta/cert-system/proto/cert_issuer/v1;certv1";
+
+import "google/protobuf/timestamp.proto";
+
+service CertificateService {
+  rpc RequestCertificate(CertificateRequest) returns (CertificateResponse);
+  rpc GetCertificateStatus(StatusRequest) returns (StatusResponse);
+  rpc RenewCertificate(RenewRequest) returns (RenewResponse);
+}
+
+message CertificateRequest {
+  string domain = 1;
+  repeated string dns_names = 2;
+  int32 duration_days = 3;
+  string issuer_id = 4;
+  string cluster_name = 5;
+  enum RequestType {
+    NEW = 0;
+    RENEWAL = 1;
+  }
+  RequestType type = 6;
+}
+
+message CertificateResponse {
+  string request_id = 1;
+  enum Status {
+    UNKNOWN = 0;
+    PENDING = 1;
+    QUEUED = 2;
+    PROCESSING = 3;
+    APPROVED = 4;
+    FAILED = 5;
+  }
+  Status status = 2;
+  int32 queue_position = 3;
+  google.protobuf.Timestamp estimated_ready = 4;
+  string error_message = 5;
+}
+
+message StatusRequest {
+  string request_id = 1;
+}
+
+message StatusResponse {
+  enum Status {
+    UNKNOWN = 0;
+    PENDING = 1;
+    APPROVED = 2;
+    FAILED = 3;
+    EXPIRED = 4;
+  }
+  Status status = 1;
+  bytes certificate_pem = 2;
+  bytes key_pem = 3;
+  bytes ca_pem = 4;
+  google.protobuf.Timestamp not_before = 5;
+  google.protobuf.Timestamp not_after = 6;
+  int32 days_until_renewal = 7;
+}
+
+message RenewRequest {
+  string certificate_id = 1;
+  string issuer_id = 2;
+}
+
+message RenewResponse {
+  string request_id = 1;
+  StatusResponse.Status status = 2;
+}

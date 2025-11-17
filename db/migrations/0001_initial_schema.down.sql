@@ -1,0 +1,15 @@
+DROP INDEX IF EXISTS idx_ops_log_issuer_timestamp;
+DROP TABLE IF EXISTS operations_log;
+DROP INDEX IF EXISTS idx_certificates_renewal;
+DROP INDEX IF EXISTS idx_certificates_not_after;
+DROP INDEX IF EXISTS idx_certificates_domain_issuer;
+DROP TABLE IF EXISTS certificates;
+DROP INDEX IF EXISTS idx_requests_domain;
+DROP INDEX IF EXISTS idx_requests_priority_status;
+DROP INDEX IF EXISTS idx_requests_issuer_status;
+DROP TABLE IF EXISTS certificate_requests;
+DROP INDEX IF EXISTS idx_rate_limit_domain_week;
+DROP TABLE IF EXISTS rate_limit_tracking;
+DROP INDEX IF EXISTS idx_domain_policies_issuer;
+DROP TABLE IF EXISTS domain_policies;
+DROP TABLE IF EXISTS issuers;
