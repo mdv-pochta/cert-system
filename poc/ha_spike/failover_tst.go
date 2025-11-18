@@ -1,8 +1,9 @@
+// comment
 package main
 
 import (
 	"fmt"
-	"sync"
+	//	"sync"
 	"sync/atomic"
 	"time"
 )
@@ -10,11 +11,11 @@ import (
 type Agent struct {
 	id    string
 	lease bool
-	mu    sync.Mutex
+	// mu    sync.Mutex
 }
 
 func main() {
-	fmt.Println("=== Active-Passive HA Failover Spike ===\n")
+	fmt.Println("=== Active-Passive HA Failover Spike ===")
 
 	primary := &Agent{id: "primary", lease: true}
 	backup := &Agent{id: "backup", lease: false}

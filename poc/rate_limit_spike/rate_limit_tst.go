@@ -1,3 +1,4 @@
+// Package main contains spikes and proof-of-concepts for Certbot automation.
 package main
 
 import (
@@ -5,13 +6,13 @@ import (
 )
 
 func main() {
-	fmt.Println("=== Rate Limiting Algorithm Spike ===\n")
+	fmt.Println("=== Rate Limiting Algorithm Spike ===")
 
 	// Week limit from Let's Encrypt
 	weekLimit := 50
-	//renewalPriority := float64(0.6)    // Renewals get priority
-	newCertLimit := float64(0.75)      // New certs get max 75%
-	parallelLimit := float64(0.50)     // Max 50% parallel
+	//renewalPriority := float64(0.6) // Renewals get priority
+	newCertLimit := float64(0.75)  // New certs get max 75%
+	parallelLimit := float64(0.50) // Max 50% parallel
 
 	fmt.Printf("Let's Encrypt Weekly Limit: %d\n\n", weekLimit)
 
@@ -27,11 +28,11 @@ func main() {
 	fmt.Printf("  New requests: %d\n\n", newRequests)
 
 	// Renewals get priority
-	renewalsProcessed := min(renewals, weekLimit)
-	parallelRenewals := min(renewalsProcessed, parallelSlots)
+	renewalsProcessed := intMin(renewals, weekLimit)
+	parallelRenewals := intMin(renewalsProcessed, parallelSlots)
 
 	// New certs get remainder
-	newAvailable := min(maxNewCerts, weekLimit-renewalsProcessed)
+	newAvailable := intMin(maxNewCerts, weekLimit-renewalsProcessed)
 
 	fmt.Printf("Processing:\n")
 	fmt.Printf("  Renewals processed: %d (all in queue)\n", renewalsProcessed)
@@ -41,7 +42,7 @@ func main() {
 	fmt.Printf("  Total used: %d/%d\n", renewalsProcessed+newAvailable, weekLimit)
 }
 
-func min(a, b int) int {
+func intMin(a, b int) int {
 	if a < b {
 		return a
 	}
